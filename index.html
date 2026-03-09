@@ -283,6 +283,7 @@ footer{background:var(--ink);padding:2.2rem 1.5rem;display:flex;align-items:cent
 @media(min-width:960px){
   nav{padding:.9rem 2.8rem;}
   .nav-links{display:flex;}
+  .ham{display:none;}
   .nav-links a{font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(242,244,245,.35);transition:color .2s;padding:.5rem 0;}
   .nav-links a:hover{color:var(--nx2);}
 }
@@ -361,7 +362,8 @@ footer{background:var(--ink);padding:2.2rem 1.5rem;display:flex;align-items:cent
 <div class="mob-menu" id="mob">
   <a href="#demo" onclick="cm()">Demo</a>
   <a href="#producto" onclick="cm()">Producto</a>
-  
+  <a href="#casos" onclick="cm()">Casos de uso</a>
+  <a href="#enlace" onclick="cm()">Biopage</a>
   <a href="#precios" onclick="cm()">Precios</a>
   <a href="#contacto" onclick="cm()">Cotizar</a>
 </div>
@@ -925,12 +927,12 @@ footer{background:var(--ink);padding:2.2rem 1.5rem;display:flex;align-items:cent
       </div>
       <div class="form rev d2">
         <div class="form-row">
-          <div class="fld"><label>Nombre</label><input type="text" placeholder="Tu nombre completo"></div>
-          <div class="fld"><label>Empresa</label><input type="text" placeholder="Nombre de tu empresa"></div>
+          <div class="fld"><label>Nombre</label><input type="text" id="f-nombre" placeholder="Tu nombre completo"></div>
+          <div class="fld"><label>Empresa</label><input type="text" id="f-empresa" placeholder="Nombre de tu empresa"></div>
         </div>
         <div class="form-row">
-          <div class="fld"><label>Email</label><input type="email" placeholder="correo@empresa.com"></div>
-          <div class="fld"><label>WhatsApp</label><input type="tel" placeholder="+52 55 0000 0000"></div>
+          <div class="fld"><label>Email</label><input type="email" id="f-email" placeholder="correo@empresa.com"></div>
+          <div class="fld"><label>WhatsApp</label><input type="tel" id="f-tel" placeholder="+52 55 0000 0000"></div>
         </div>
         <div class="form-row">
           <div class="fld">
@@ -954,7 +956,7 @@ footer{background:var(--ink);padding:2.2rem 1.5rem;display:flex;align-items:cent
             </select>
           </div>
         </div>
-        <div class="fld"><label>Descripcion del proyecto</label><textarea placeholder="Cuentanos tu empresa, uso del llavero, colores, cantidad exacta..."></textarea></div>
+        <div class="fld"><label>Descripcion del proyecto</label><textarea id="f-desc" placeholder="Cuentanos tu empresa, uso del llavero, colores, cantidad exacta..."></textarea></div>
         <div><button class="btn-form" onclick="submitForm(this)">Enviar solicitud</button></div>
       </div>
     </div>
@@ -1019,4 +1021,46 @@ function cm(){document.getElementById("ham").classList.remove("open");document.g
 })();
 
 function cotizar(pkg){var s=document.getElementById("sel-pkg");if(s)s.value=pkg;document.getElementById("contacto").scrollIntoView({behavior:"smooth"});}
-function submitForm(btn){var o=btn.textContent;btn.textContent="Enviado";btn.style.background="var(--nx2)";btn.disabled=true;setTimeout(function(){btn.textContent=o;btn.style.background="
+function submitForm(btn){
+  var nombre  = (document.getElementById('f-nombre')  ||{}).value||'';
+  var empresa = (document.getElementById('f-empresa') ||{}).value||'';
+  var email   = (document.getElementById('f-email')   ||{}).value||'';
+  var tel     = (document.getElementById('f-tel')     ||{}).value||'';
+  var pkg     = (document.getElementById('sel-pkg')   ||{}).value||'';
+  var cuando  = (document.getElementById('f-cuando')  ||{}).value||'';
+  var desc    = (document.getElementById('f-desc')    ||{}).value||'';
+
+  if(!nombre||!tel){
+    alert('Por favor ingresa tu nombre y WhatsApp.');
+    return;
+  }
+
+  var msg = '🔑 *COTIZACION NEXUS*
+
+'
+    + '*Nombre:* '   + nombre  + '
+'
+    + '*Empresa:* '  + empresa + '
+'
+    + '*Email:* '    + email   + '
+'
+    + '*Tel:* '      + tel     + '
+'
+    + '*Paquete:* '  + pkg     + '
+'
+    + '*Cuando:* '   + cuando  + '
+'
+    + '*Detalle:* '  + desc;
+
+  var url = 'https://wa.me/524426597342?text=' + encodeURIComponent(msg);
+  window.open(url, '_blank');
+
+  btn.textContent = '✓ Enviado';
+  btn.style.background = 'var(--nx2)';
+  btn.disabled = true;
+  setTimeout(function(){
+    btn.textContent = 'Enviar solicitud';
+    btn.style.background = '';
+    btn.disabled = false;
+  }, 4000);
+}"
